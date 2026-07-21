@@ -7,7 +7,7 @@ m = 50;            % Mass of wheel
 Kt = 114182.69772; % Tire Spring Constant
 
 
-% Simulate suspension system and opens simulink
+% Simulate each road profile and opens simulink
 for select = 1:4
     
 model = 'MassSpringDamper_simulink';
