@@ -9,7 +9,7 @@ c = 1000;       % damping force, Ns/m
 fig = uifigure('Name','Quarter Car Suspension','Position',[100 100 1100 850]);
 
 %fig grid dimensions
-g = uigridlayout(fig,[9 2]);
+g = uigridlayout(fig,[10 2]);
 g.RowHeight = {25,25,25,220,220,220,40,40,'1x'};
 g.ColumnWidth = {250,'1x'};
 
@@ -24,7 +24,7 @@ mSlider = uislider(g,...
     Limits=[50 3000],... % defined limits on mass
     Value=m); % set to default defined value
 mSlider.Layout.Row = 1;
-mSlider.Layout.Column = 2;
+mSlider.Layout.Column = [2 3];
 
 % Spring Slider
 kLabel = uilabel(g); %define kLabel for transformations to spring slider
@@ -36,7 +36,7 @@ kSlider = uislider(g,...
     Limits=[1000 300000],... % defined limits on spring force, k
     Value=k); %set to defined value for k
 kSlider.Layout.Row = 2;
-kSlider.Layout.Column = 2;
+kSlider.Layout.Column = [2 3];
 
 % Damper Slider
 cLabel = uilabel(g);  %define mLabel for transformations to damper slider
@@ -48,23 +48,23 @@ cSlider = uislider(g,...
     Limits=[0 100000],... % defined limits on spring force, c
     Value=c); %set to defined value for c
 cSlider.Layout.Row = 3;
-cSlider.Layout.Column = 2;
+cSlider.Layout.Column = [2 3];
 
 %% Three Plots
 
 ax1 = uiaxes(g);
 ax1.Layout.Row = 4;
-ax1.Layout.Column = [1 2];
+ax1.Layout.Column = [1 3];
 title(ax1,'Speed Bump')
 
 ax2 = uiaxes(g);
 ax2.Layout.Row = 5;
-ax2.Layout.Column = [1 2];
+ax2.Layout.Column = [1 3];
 title(ax2,'Pothole')
 
 ax3 = uiaxes(g);
 ax3.Layout.Row = 6;
-ax3.Layout.Column = [1 2];
+ax3.Layout.Column = [1 3];
 title(ax3,'Rough Road')
 
 %% Results
@@ -74,8 +74,8 @@ freqLabel.Layout.Row = 7;
 freqLabel.Layout.Column = [1 2];
 
 zetaLabel = uilabel(g);
-zetaLabel.Layout.Row = 8;
-zetaLabel.Layout.Column = [1 2];
+zetaLabel.Layout.Row = 7;
+zetaLabel.Layout.Column = [2 3];
 
 %% Slider Callbacks
 
