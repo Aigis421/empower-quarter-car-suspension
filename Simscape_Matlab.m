@@ -5,46 +5,32 @@ c = 700;           % Suspension damping constant
 M = 108;           % Mass of Car
 m = 50;            % Mass of wheel
 Kt = 114182.69772; % Tire Spring Constant
-select = 0;        % Initializing constant to run through Road profiles
+
 
 % Simulate suspension system and opens simulink
-while select < 4
-    select = select + 1';
+for select = 1:4
     
 model = 'MassSpringDamper_simulink';
 open_system(model);
 Smodel = sim(model);
+    
+names = {'Smooth Speed Bump','Rough Terrain','Smooth Median Strip','Rough Terrain + Pothole'};
+Data(select).name   = names{select};
+Data(select).t      = Smodel.tout;
+Data(select).S_pos  = Smodel.SprungMassPos.Data;
+Data(select).US_pos = Smodel.UnSprungMassPos.Data;
+Data(select).Zt     = Smodel.RoadProfile.Data;
+Data(select).S_vel  = Smodel.SprungMassVel.Data;
+Data(select).US_vel = Smodel.UnSprungMassVel.Data;
+Data(select).S_Acc  = Smodel.SprungMassAccel.Data;
+Data(select).US_Acc = Smodel.UnSprungMassAccel.Data;
 
-% Extracts data from Simulink
-t = Smodel.tout;
-S_pos = Smodel.SprungMassPos.Data;
-US_pos = Smodel.UnSprungMassPos.Data;
-Zt = Smodel.RoadProfile.Data;
+% analysis, for each road profile
+Data(select).comfort    = rms(Data(select).S_Acc);
+Data(select).maxTravel  = max(Data(select).S_pos);
+Data(select).deflection = Data(select).US_pos - Data(select).Zt;
 
-S_vel = Smodel.SprungMassVel.Data;
-US_vel = Smodel.UnSprungMassVel.Data;
-
-S_Accel = Smodel.SprungMassAccel.Data;
-US_Accel = Smodel.UnSprungMassAccel.Data;
-
-% Ride Analysis
-Comfort_m = rms(S_Accel);
-max_travel = max(S_pos);
-deflection = US_pos - Zt;
-
-%plotting Sprung Mass Position
 subplot(2,2,select)
-plot(t,S_pos)
-
-if select == 1
-    title('Smooth Speed bump')
-elseif select == 2
-    title('Rough Terrain')
-elseif select == 3
-    title('Smooth Median Strip')
-else 
-    title('Rough Terrain + Pothole')
-end
-
-
+plot(Data(select).t, Data(select).S_pos)
+title(Data(select).name)
 end
