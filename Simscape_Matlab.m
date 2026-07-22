@@ -49,4 +49,35 @@ subplot(2,2,S)
 plot(Data(S).t, Data(S).US_pos)
 title(Data(S).name)
 
+if Data(S).comfort > 2.5
+    Data(S).label = 'Extremely Uncomfortable';
+    Data(S).description = 'Extreme discomfort; risk of injury or severe health effects.';
+elseif Data(S).comfort > 1.25
+    Data(S).label = 'Very Uncomfortable';
+    Data(S).description = 'Severe discomfort; likely to cause pain, fatigue, or health issues.';
+elseif Data(S).comfort > 0.8
+    Data(S).label = 'Uncomfortable';
+    Data(S).description = 'Significant discomfort; may lead to fatigue, reduced efficiency, or health risks.';
+elseif Data(S).comfort > 0.5
+    Data(S).label = 'Fairly Uncomfortable';
+    Data(S).description = 'Moderate discomfort; may cause fatigue or annoyance during prolonged exposure.';
+elseif Data(S).comfort > 0.315
+    Data(S).label = 'A Little Uncomfortable';
+    Data(S).description = 'Mild discomfort; noticeable but tolerable for most people.';
+else
+    Data(S).label = 'Not Uncomfortable';
+    Data(S).description = 'Vibrations are barely perceptible; no discomfort.';
+
+end
+
+fprintf('Profile %d: Comfort = %.4f -> %s\n', S, Data(S).comfort, Data(S).label);
+
+fprintf('Profile %d: Max Travel = %.4f\n', S, Data(S).maxTravel);
+
+d = Data(S).deflection;
+peak = max(d);            % max positive deflection
+peakNeg = min(d);         % max negative deflection
+rmsVal = rms(d);          % RMS deflection
+fprintf('Deflection Peak: %.4f, Peak Negative: %.4f, RMS: %.4f\n', peak, peakNeg, rmsVal);
+
 end
