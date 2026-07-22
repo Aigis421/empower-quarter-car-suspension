@@ -7,30 +7,31 @@ m = 50;            % Mass of wheel
 Kt = 114182.69772; % Tire Spring Constant
 
 
-% Simulate each road profile and opens simulink
-for select = 1:4
-    
+% Simulate suspension system and opens simulink
+for S = 1:4
+
 model = 'MassSpringDamper_simulink';
 open_system(model);
 Smodel = sim(model);
     
 names = {'Smooth Speed Bump','Rough Terrain','Smooth Median Strip','Rough Terrain + Pothole'};
-Data(select).name   = names{select};
-Data(select).t      = Smodel.tout;
-Data(select).S_pos  = Smodel.SprungMassPos.Data;
-Data(select).US_pos = Smodel.UnSprungMassPos.Data;
-Data(select).Zt     = Smodel.RoadProfile.Data;
-Data(select).S_vel  = Smodel.SprungMassVel.Data;
-Data(select).US_vel = Smodel.UnSprungMassVel.Data;
-Data(select).S_Acc  = Smodel.SprungMassAccel.Data;
-Data(select).US_Acc = Smodel.UnSprungMassAccel.Data;
+Data(S).name   = names{S};
+Data(S).t      = Smodel.tout;
+Data(S).S_pos  = Smodel.SprungMassPos.Data;
+Data(S).US_pos = Smodel.UnSprungMassPos.Data;
+Data(S).Zt     = Smodel.RoadProfile.Data;
+Data(S).S_vel  = Smodel.SprungMassVel.Data;
+Data(S).US_vel = Smodel.UnSprungMassVel.Data;
+Data(S).S_Acc  = Smodel.SprungMassAccel.Data;
+Data(S).US_Acc = Smodel.UnSprungMassAccel.Data;
 
 % analysis, for each road profile
-Data(select).comfort    = rms(Data(select).S_Acc);
-Data(select).maxTravel  = max(Data(select).S_pos);
-Data(select).deflection = Data(select).US_pos - Data(select).Zt;
+Data(S).comfort    = rms(Data(S).S_Acc);
+Data(S).maxTravel  = max(Data(S).S_pos);
+Data(S).deflection = Data(S).US_pos - Data(S).Zt;
 
-subplot(2,2,select)
-plot(Data(select).t, Data(select).S_pos)
-title(Data(select).name)
+subplot(2,2,S)
+plot(Data(S).t, Data(S).S_pos)
+title(Data(S).name)
+
 end
