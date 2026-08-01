@@ -7,6 +7,7 @@ m = 50;            % Mass of wheel
 Kt = 114182.69772; % Tire Stiffness Constant
 g = 9.81;          % gravity
 staticLoad = (M + m) * g;   % overall tire load
+a = 8;              % rough terrain smoothing
 
 names = {'Smooth Speed Bump','Rough Terrain','Washboards','Rough Terrain + Pothole'};
 % 1 = Smooth speed bump
