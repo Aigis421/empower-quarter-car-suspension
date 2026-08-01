@@ -80,10 +80,6 @@ else
     Data(S).description = 'Vibrations are barely perceptible; no discomfort.';
 end
 
-fprintf('Profile %d: Comfort = %.4f -> %s\n', S, Data(S).comfort, Data(S).label);
-
-fprintf('Profile %d: Max Travel = %.4f\n', S, Data(S).maxTravel);
-
 % Road Handling Performance
 if Data(S).liftoff
     Data(S).rhLabel = 'Contact Lost';
@@ -102,10 +98,39 @@ else
     Data(S).rhDescription = 'Tire load stays close to static; grip barely affected.';
 end
 
-fprintf('Profile %d: (RMS) Average Load Fluctuation = %.2f N (%.2f%% of static %.1f N) -> %s\n', ...
-    S, Data(S).rmsFdyn, Data(S).rmsPct, staticLoad, Data(S).rhLabel);
+% Overall Score (A-F) combining comfort and road-holding
+switch Data(S).label
+    case 'Not Uncomfortable',        comfortGrade = 4; % A
+    case 'A Little Uncomfortable',   comfortGrade = 3; % B
+    case 'Fairly Uncomfortable',     comfortGrade = 2; % C
+    case 'Uncomfortable',            comfortGrade = 1; % D
+    otherwise,                       comfortGrade = 0; % F (Folks Inside Vehicle Are Getting Hurt)
+end
 
-fprintf('Profile %d: Lowest Tire Load = %.2f N (Liftoff Events = %d)\n', ...
-    S, Data(S).minForce, Data(S).liftoffCount);
+switch Data(S).rhLabel
+    case 'Excellent Road-Holding',   rhGrade = 4; % A
+    case 'Good Road-Holding',        rhGrade = 3; % B
+    case 'Fair Road-Holding',        rhGrade = 2; % C
+    case 'Poor Road-Holding',        rhGrade = 1; % D
+    otherwise,                       rhGrade = 0; % F (Contact Lost)
+end
+
+gradeLetters = {'F','D','C','B','A'};   % index 1 = grade 0, index 5 = grade 4
+overallGrade = round((comfortGrade + rhGrade) / 2);
+Data(S).score = gradeLetters{overallGrade + 1};
+
+fprintf('Profile %d: %s Overall Score = %s\n', S, names{S}, Data(S).score);
+
+fprintf('  Max Travel = %.4f\n', Data(S).maxTravel);
+
+fprintf('  Comfort = %.4f -> %s\n', Data(S).comfort, Data(S).label);
+fprintf('  Comfort: %s\n', Data(S).description);
+
+fprintf('  (RMS) Average Load Fluctuation = %.2f N (%.2f%% of static %.1f N) -> %s\n', ...
+    Data(S).rmsFdyn, Data(S).rmsPct, staticLoad, Data(S).rhLabel);
+fprintf('  Road-Holding: %s\n', Data(S).rhDescription);
+
+fprintf('  Lowest Tire Load = %.2f N (Liftoff Events = %d)\n', ...
+    Data(S).minForce, Data(S).liftoffCount);
 
 end
