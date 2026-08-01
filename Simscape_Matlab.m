@@ -1,10 +1,12 @@
 clear;
 
-Ks = 30647.196473; % Suspension spring constant
+Ks = 30647.196473; % Suspension spring stiffness constant
 c = 700;           % Suspension damping constant
 M = 108;           % Mass of Car
 m = 50;            % Mass of wheel
-Kt = 114182.69772; % Tire Spring Constant
+Kt = 114182.69772; % Tire Stiffness Constant
+g = 9.81;          % gravity
+staticLoad = (M + m) * g;   % overall tire load
 
 names = {'Smooth Speed Bump','Rough Terrain','Washboards','Rough Terrain + Pothole'};
 % 1 = Smooth speed bump
@@ -30,10 +32,19 @@ Data(S).US_vel = Smodel.UnSprungMassVel.Data;
 Data(S).S_Acc  = Smodel.SprungMassAccel.Data;
 Data(S).US_Acc = Smodel.UnSprungMassAccel.Data;
 
-% analysis, for each road profile
+% analysis for each road profile
 Data(S).comfort    = rms(Data(S).S_Acc);
 Data(S).maxTravel  = max(Data(S).S_pos);
 Data(S).deflection = Data(S).US_pos - Data(S).Zt;
+
+% Road-holding calculations
+Data(S).Fdyn      = -Kt .* Data(S).deflection;   % dynamic tire load (N); + = extra load, - = unloading
+Data(S).tireForce = staticLoad + Data(S).Fdyn;    % total instantaneous normal force
+Data(S).minForce  = min(Data(S).tireForce);
+Data(S).rmsFdyn   = rms(Data(S).Fdyn);
+Data(S).rmsPct    = Data(S).rmsFdyn / staticLoad * 100;
+Data(S).liftoff   = any(Data(S).tireForce <= 0);
+Data(S).liftoffCount = sum(diff([0; Data(S).tireForce <= 0]) == 1);
 
 % Plotting car position
 figure(1)
@@ -67,17 +78,34 @@ elseif Data(S).comfort > 0.315
 else
     Data(S).label = 'Not Uncomfortable';
     Data(S).description = 'Vibrations are barely perceptible; no discomfort.';
-
 end
 
 fprintf('Profile %d: Comfort = %.4f -> %s\n', S, Data(S).comfort, Data(S).label);
 
 fprintf('Profile %d: Max Travel = %.4f\n', S, Data(S).maxTravel);
 
-d = Data(S).deflection;
-peak = max(d);            % max positive deflection
-peakNeg = min(d);         % max negative deflection
-rmsVal = rms(d);          % RMS deflection
-fprintf('Deflection Peak: %.4f, Peak Negative: %.4f, RMS: %.4f\n', peak, peakNeg, rmsVal);
+% Road Handling Performance
+if Data(S).liftoff
+    Data(S).rhLabel = 'Contact Lost';
+    Data(S).rhDescription = 'Tire load reaches zero at least once; wheel skips / loses contact with the road.';
+elseif Data(S).rmsPct > 40
+    Data(S).rhLabel = 'Poor Road-Holding';
+    Data(S).rhDescription = 'Large load fluctuations; grip is significantly reduced.';
+elseif Data(S).rmsPct > 25
+    Data(S).rhLabel = 'Fair Road-Holding';
+    Data(S).rhDescription = 'Noticeable load fluctuations; reduced grip on the rough surface.';
+elseif Data(S).rmsPct > 10
+    Data(S).rhLabel = 'Good Road-Holding';
+    Data(S).rhDescription = 'Moderate load fluctuations; tire grip is mostly preserved.';
+else
+    Data(S).rhLabel = 'Excellent Road-Holding';
+    Data(S).rhDescription = 'Tire load stays close to static; grip barely affected.';
+end
+
+fprintf('Profile %d: (RMS) Average Load Fluctuation = %.2f N (%.2f%% of static %.1f N) -> %s\n', ...
+    S, Data(S).rmsFdyn, Data(S).rmsPct, staticLoad, Data(S).rhLabel);
+
+fprintf('Profile %d: Lowest Tire Load = %.2f N (Liftoff Events = %d)\n', ...
+    S, Data(S).minForce, Data(S).liftoffCount);
 
 end
