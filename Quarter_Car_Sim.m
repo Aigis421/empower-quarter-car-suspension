@@ -1,6 +1,5 @@
-clear;
-
-Ks0 = 30647.196473;            % Suspension spring stiffness constant
+Ks = 30647.196473              % Suspension spring stiffness constant
+Ks0 = 30647.196473;            
 c = 700;                       % Suspension damping constant
 M = 108;                       % Mass of Car
 m = 50;                        % Mass of wheel

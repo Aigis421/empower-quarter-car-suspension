@@ -1,5 +1,3 @@
-clear;
-
 Ks = 30647.196473; % Suspension spring stiffness constant
 c = 700;           % Suspension damping constant
 M = 108;           % Mass of Car
@@ -64,22 +62,16 @@ title(Data(S).name)
 % Comfort
 if Data(S).comfort > 2.5
     Data(S).Clabel = 'Extremely Uncomfortable'; Data(S).CGrade = 0;
-    Data(S).description = 'Extreme discomfort; risk of injury or severe health effects.';
 elseif Data(S).comfort > 1.25
     Data(S).Clabel = 'Very Uncomfortable'; Data(S).CGrade = 0;
-    Data(S).description = 'Severe discomfort; likely to cause pain, fatigue, or health issues.';
 elseif Data(S).comfort > 0.8
     Data(S).Clabel = 'Uncomfortable'; Data(S).CGrade = 1;
-    Data(S).description = 'Significant discomfort; may lead to fatigue, reduced efficiency, or health risks.';
 elseif Data(S).comfort > 0.5
     Data(S).Clabel = 'Fairly Uncomfortable'; Data(S).CGrade = 2;
-    Data(S).description = 'Moderate discomfort; may cause fatigue or annoyance during prolonged exposure.';
 elseif Data(S).comfort > 0.315
     Data(S).Clabel = 'A Little Uncomfortable'; Data(S).CGrade = 3;
-    Data(S).description = 'Mild discomfort; noticeable but tolerable for most people.';
 else
     Data(S).Clabel = 'Not Uncomfortable'; Data(S).CGrade = 4;
-    Data(S).description = 'Vibrations are barely perceptible; no discomfort.';
 end
 
 % Road Handling Performance
@@ -104,6 +96,6 @@ end
 Summary = table(string(names(:)), string({Data.score}'), [Data.comfort]', ...
     string({Data.Clabel}'), [Data.maxTravel]', [Data.rmsPct]', ...
     string({Data.rhLabel}'), [Data.liftoffCount]', [Data.minForce]', ...
-    'VariableNames', {'Profile','Score','Comfort Data','Comfort Desc.','Max Travel', ...
+    'VariableNames', {'Profile','Score','Comfort Data','Comfort Label','Max Travel', ...
     'RMS pct','Road Holding','Liftoffs','Min Load'});
 disp(Summary)
