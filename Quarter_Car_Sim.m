@@ -1,6 +1,7 @@
 Ks = 30647.196473              % Suspension spring stiffness constant
-Ks0 = 30647.196473;            
+Ks0 = 30647.196473;            % Simulation reset to baseline
 c = 700;                       % Suspension damping constant
+c0 = 700;                      % Simulation reset to baseline
 M = 108;                       % Mass of Car
 m = 50;                        % Mass of wheel
 Kt = 114182.69772;             % Tire Stiffness Constant
@@ -23,16 +24,21 @@ open_system(model);
 passCount = zeros(1,4);
 
 for S = 1:4
+    s = S;
+    
     % parameter robustness test
     for trialNum = 1:20
-        Smodel = sim(model);
 
-        % variance of params
+         % variance of params
         Ks = Ks0 + Ks0*(0.005*trialNum);
-        c = c + c*(0.005*trialNum);
+        c = c0 + c0*(0.005*trialNum);
+
+        Smodel = sim(model);
 
         % Assigns Data based on road profile simulation to "Data" struct 
         Data(S).name   = names{S};
+        Data(S).trial(trialNum).Ks = Ks; 
+        Data(S).trial(trialNum).c = c;
         Data(S).trial(trialNum).t      = Smodel.tout;
         Data(S).trial(trialNum).Zt     = Smodel.RoadProfile.Data;
         Data(S).trial(trialNum).S_pos  = Smodel.SprungMassPos.Data;
