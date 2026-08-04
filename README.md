@@ -12,11 +12,11 @@ https://drive.google.com/drive/folders/1Rf73Mk84F7ZP1KKvAoLgGcYQYsR3elV3
 
 Car Bois
 
-##Problem Statement
+## Problem Statement
 
 This project addresses the need for force dissipation in moving systems. Anything that moves, wiggles, or bounces needs some sort of suspension to keep it intact over its useful lifetime. By designing using simulation models these systems can be quickly subjected to different scenarios to judge their efficacy in diverse situations before prototyping. To keep things manageable, this team will be simulating only ¼ of a car’s full suspension.
 
-##Approach 
+## Approach 
 
 We followed the suggested steps on the Github project page to divide the workload and create the separate recommended deliverables to be used all together in the final project (Scripts, Models, Simulations). We used the reference Mass-Spring-Damper in Simulink and the Simscape simulation for our models. Based on our results, we continued to iterate and improve on our models and come up with theoretical cases and testing.
 
