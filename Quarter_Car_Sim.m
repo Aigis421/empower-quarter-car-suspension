@@ -25,7 +25,7 @@ passCount = zeros(1,4);
 
 for S = 1:4
     s = S;
-    
+
     % parameter robustness test
     for trialNum = 1:20
 
@@ -134,14 +134,11 @@ for S = 1:4
 end
 
 %% aggregating each profile and displaying results
+
 aggComfort = zeros(1,4);
 
 for S = 1:4
-    for T = 1:20
-        aggComfort(S) = aggComfort(S) + Data(S).trial(T).comfort;
-        
-
-    end
+        aggComfort(S) = mean([Data(S).trial.comfort]);
 end
 
 worstComfort = max(aggComfort);
