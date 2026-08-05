@@ -1,5 +1,5 @@
 <table>
-<td><img src="https://gist.githubusercontent.com/robertogl/e0115dc303472a9cfd52bbbc8edb7665/raw/suspension.png"  width=500 /></td>
+<td><img src="https://github.com/HBoylan1/Car-pics/blob/main/racecar.jpg"  width=500 /></td>
 <td><p><h1>Quarter-Car Suspension Modeling and Simulation with Simscape Multibody</h1></p>
 <p>The Car Bois model and tune a Simscape Multibody quarter-car suspension model using an automated road test suite.</p>
 </table>
