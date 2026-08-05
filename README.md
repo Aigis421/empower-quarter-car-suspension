@@ -88,13 +88,13 @@ Open the "QuarterCarSuspension_StudentProjectTemplate.mlx" Live Script in MATLAB
 ### Our four road profiles and brief descriptions of how each was made and operates.
 
 - Profile 1 (Speed Bump)
-    - 
+    - This is a cosine-based function that smoothly transitions between 0 and a maximum value. The cosine function oscillates between 0 and 2. Before 1 and after 1.1 in the time series the "road" is flat or at 0.
 - Profile 2 (Rough Terrain)
-    - 
+    - We used a Band-Limited White Noise block and passed the signal through a transfer function block to limit the amount of positive output to better match a real world scenario the signal then passes through a gain block to increase the output to a usable level.
 - Profile 3 (Washboards)
-    -
+    - A basic approximation of washboards using a sine wave starting at 0.
 - Profile 4 (Rough Terrain + Pothole)
-    -
+    - Using the same smooth cosine function as the speed bump this road profile combines the conditions of the rough road and cosine-based dip in the terrain, creating a “pothole.”
 
 
 ## Reference Material
