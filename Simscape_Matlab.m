@@ -52,7 +52,6 @@ end
 
 [best, idx] = min(gripScore(:));
 
-%idx = (size(A), [2 3 4...], [1 2 4....]) 
 % Convert the linear indices [3 4 5 6] to row and column subscripts to
 % retrieve best Ks and Cs Values
 [idxK, idxC] = ind2sub(size(gripScore), idx);
