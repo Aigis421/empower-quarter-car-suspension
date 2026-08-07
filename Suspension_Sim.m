@@ -11,9 +11,9 @@ Data = struct('name', cell(1,4), 'trial', cell(1,4));
 
 %% Optimizing Ks and C
 % User picks road profile
-disp('(1) Smooth Speed Bump, (2)Rough Terrain, (3) Washboards, (4) Rough Terrain + Pothole')
+disp('(1) Smooth pothole, (2)Rough Terrain, (3) Washboards, (4) Rough Terrain + speed bump')
 S = input('Which profile do you want to optimize for? ');
-k = input('How many Ks values do you want to sweep? ');
+k = input('How many Ks & Cs values do you want to sweep? ');
 v = input('Enter car velocity(mph): ');
 v = v*0.44704; % mph to m/s
 
@@ -43,7 +43,6 @@ for i = 1:numel(Ks_range)
         rmsPct    = rmsFdyn / staticLoad * 100;
         liftoff   = any(tireForce <= 0);
 
-        % --- Kart gate: grip is king ---
         if SusTravel <= travelLimit && comfort <= AcellLimit
             gripScore(i,j) = rmsPct;  % minimize tire-load fluctuation
         end
@@ -58,10 +57,7 @@ end
 Ks0 = Ks_range(idxK);
 c0  = Cs_range(idxC);
 
-
 %% Simulate suspension system and opens simulink
-model = 'MassSpringDamper_simulink';
-open_system(model);
 
 % For counting how many trials pass
 passCount = zeros(1,4);
@@ -88,12 +84,12 @@ for S = 1:4
         
         % analysis for each road profile
         Data(S).trial(trialNum).comfort    = rms(Data(S).trial(trialNum).S_Acc);
-        Data(S).trial(trialNum).SusTravel  = Data(S).trial(trialNum).S_pos - Data(S).trial(trialNum).US_pos;
-        Data(S).trial(trialNum).maxTravel  = max(Data(S).trial(trialNum).S_pos) - min(min(Data(S).trial(trialNum).US_pos));
+        Data(S).trial(trialNum).susDefl    = Data(S).trial(trialNum).S_pos - Data(S).trial(trialNum).US_pos;
+        Data(S).trial(trialNum).maxTravel  = max(Data(S).trial(trialNum).susDefl) - min(Data(S).trial(trialNum).susDefl);
+        Data(S).trial(trialNum).tireDefl   = Data(S).trial(trialNum).US_pos - Data(S).trial(trialNum).Zt;
 
-        
         % Road-holding calculations
-        Data(S).trial(trialNum).Fdyn      = -Kt .* Data(S).trial(trialNum).SusTravel;    % dynamic tire load (N); + = extra load, - = unloading
+        Data(S).trial(trialNum).Fdyn      = Kt .* Data(S).trial(trialNum).tireDefl;    % dynamic tire load (N); + = extra load, - = unloading
         Data(S).trial(trialNum).tireForce = staticLoad + Data(S).trial(trialNum).Fdyn;    % total instantaneous normal force
         Data(S).trial(trialNum).minForce  = min(Data(S).trial(trialNum).tireForce);
         Data(S).trial(trialNum).rmsFdyn   = rms(Data(S).trial(trialNum).Fdyn);
