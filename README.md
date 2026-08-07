@@ -31,13 +31,12 @@ Finally, we optimized the suspension parameters to meet performance constraints 
 ### How to Execute
 
 - Download 
-	- MassSpringDamper_simulink.slx
-	- BaselineQuarterCarMultibody.slx
-	- Simscape_Matlab.m
-- Open in MATLAB
-	- Simscape_Matlab.m 
-- Run
-	- Simscape_Matlab.m 
+	- Suspension_Sim.m
+	- Solver_simulink.slx
+- Ensure both files are stored in the same folder
+- Open Suspension_Sim.m in MATLAB
+	- Run .m file and input requested values in command window
+	- wait for results
 
 ## Approach 
 
