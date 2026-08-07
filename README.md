@@ -20,13 +20,12 @@ This project addresses the need for force dissipation in moving systems. Anythin
 
 The team developed a quarter-car suspension model in Simscape Multibody to simulate the mechanical structure and motion of a vehicle corner. 
 The vehicle corner is defined as the body corner connected to the wheel assembly, which consists of parameterized suspension spring, damper, and tire vertical compliance elements. 
-- https://github.com/Aigis421/empower-quarter-car-suspension/blob/main/BaselineQuarterCarMultibody.slx
 
 We incorporated the Simscape model into a Simulink based test harness that evaluates the model using a set of road profiles (Speed bump [smooth hump], Pothole [smooth dip], Washboards [wave pattern], Rough road [band-limited noise]) and automatically calculates objective metrics for comfort and road holding. 
-- https://github.com/Aigis421/empower-quarter-car-suspension/blob/main/MassSpringDamper_simulink.slx
+- https://github.com/Aigis421/empower-quarter-car-suspension/blob/main/Solver_simulink.slx
 
 Finally, we optimized the suspension parameters to meet performance constraints and enhanced overall performance across all tested road conditions using a MATLAB-based automated test runner that stores all parameters and executes all road cases and computes metrics, and a tuning workflow that sweeps our tunable parameters through a number of small changes.
-- https://github.com/Aigis421/empower-quarter-car-suspension/blob/main/Simscape_Matlab.m
+- https://github.com/Aigis421/empower-quarter-car-suspension/blob/main/Suspension_Sim.m
 
 ### How to Execute
 
