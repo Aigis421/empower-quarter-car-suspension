@@ -1,8 +1,8 @@
 clear;
 
-M = 54.2237;              % Mass of Car
-m = 22.6796;              % Mass of wheel
-Kt = 114182.6977;         % Tire Stiffness Constant
+M = 54.2237;              % Mass of Car (kg)
+m = 22.6796;              % Mass of wheel (kg)
+Kt = 114182.6977;         % Tire Stiffness Constant (N/m)
 g = 9.81;                 % gravity
 staticLoad = (M + m) * g; % overall tire load
 a = 8;                    % rough terrain smoothing 
@@ -57,7 +57,9 @@ end
 Ks0 = Ks_range(idxK);
 c0  = Cs_range(idxC);
 
-%% Simulate suspension system and opens simulink
+%% Simulate suspension using ks and c values found above
+%  Runs 20 trials for each road profile while varying Ks and c by 10 percent
+%  as a robustness test
 
 % For counting how many trials pass
 passCount = zeros(1,4);
@@ -155,7 +157,7 @@ for S = 1:4
     end
 end
 
-% plots of 1st trial
+% plots of 1st trial, no percent increase in Ks and c
 for S = 1:4
     % Plotting car position
     figure(1)
