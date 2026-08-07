@@ -22,7 +22,7 @@ Cs_range = linspace(0, 5000, k);
 travelLimit  = 0.050;  
 AcellLimit  = 3.0;    
 
-model = 'MassSpringDamper_simulink';
+model = 'Solver_simulink';
 open_system(model);
 
 gripScore = inf(numel(Ks_range), numel(Cs_range));
