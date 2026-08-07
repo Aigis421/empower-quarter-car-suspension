@@ -10,11 +10,6 @@ staticLoad = (M + m) * g;      % overall tire load
 a = 8;                         % rough terrain smoothing 
 
 names = {'Smooth Speed Bump','Rough Terrain','Washboards','Rough Terrain + Pothole'};
-% 1 = Smooth speed bump
-% 2 = Rough Terrain
-% 3 = Washboards
-% 4 = Rough Terrain + Pothole
-
 
 %% Simulate suspension system and opens simulink
 model = 'MassSpringDamper_simulink';
